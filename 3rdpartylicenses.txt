@@ -192,6 +192,7 @@ THE SOFTWARE.
 
 
 @smartcodelab/ngx-prettify
+MIT
 
 angular-split
 Apache-2.0
