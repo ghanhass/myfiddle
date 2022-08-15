@@ -815,6 +815,38 @@
       "mobile_layout": "1:1",
       "iframe_resize_value": 922,
       "id": 51
+    },
+    {
+      "js": "",
+      "html": "",
+      "css": "",
+      "js_part_size": 313.6666666666667,
+      "css_part_size": 313.6666666666667,
+      "html_part_size": 313.6666666666667,
+      "code_parts_size": 350,
+      "main_container_width": 1421,
+      "main_container_height": 951,
+      "title": "",
+      "layout": 3,
+      "mobile_layout": "1:1",
+      "iframe_resize_value": 441,
+      "id": 52
+    },
+    {
+      "js": "",
+      "html": "",
+      "css": "",
+      "js_part_size": 470.3333333333333,
+      "css_part_size": 470.3333333333333,
+      "html_part_size": 470.3333333333333,
+      "code_parts_size": 300,
+      "main_container_width": 1421,
+      "main_container_height": 951,
+      "title": "",
+      "layout": 2,
+      "mobile_layout": "1:1",
+      "iframe_resize_value": 471,
+      "id": 53
     }
   ]
 }
