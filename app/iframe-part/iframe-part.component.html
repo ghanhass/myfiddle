@@ -1,0 +1,2 @@
+<input #copyInput type="text" class="copy-input">
+<iframe #iframe (load)="onFormLoad()" [src]="getIframeSrc() | safe:'url'"></iframe>
