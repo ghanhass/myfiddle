@@ -101,7 +101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AppModule: () => (/* binding */ AppModule),
 /* harmony export */   loadConfigs: () => (/* binding */ loadConfigs)
 /* harmony export */ });
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/platform-browser */ 436);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/platform-browser */ 436);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @angular/core */ 7580);
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app-routing.module */ 4114);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ 92);
@@ -110,18 +110,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _css_part_css_part_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./css-part/css-part.component */ 7292);
 /* harmony import */ var _js_part_js_part_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./js-part/js-part.component */ 9976);
 /* harmony import */ var _iframe_part_iframe_part_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./iframe-part/iframe-part.component */ 1284);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! @angular/forms */ 4456);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/forms */ 4456);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @angular/common/http */ 6443);
 /* harmony import */ var _loader_loader_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./loader/loader.component */ 7220);
-/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/platform-browser/animations */ 3835);
-/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ngx-toastr */ 6371);
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! @angular/platform-browser/animations */ 3835);
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ngx-toastr */ 6371);
 /* harmony import */ var _modal_modal_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modal/modal.component */ 6388);
 /* harmony import */ var _ressources_ressources_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ressources/ressources.component */ 1514);
 /* harmony import */ var _main_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./main.service */ 6592);
 /* harmony import */ var _safe_pipe__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./safe.pipe */ 6175);
 /* harmony import */ var _fiddles_history_fiddles_history_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./fiddles-history/fiddles-history.component */ 4872);
 /* harmony import */ var _pastebin_pastebin_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./pastebin/pastebin.component */ 1806);
-/* harmony import */ var _ctrl_ngx_codemirror__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! @ctrl/ngx-codemirror */ 261);
+/* harmony import */ var _ctrl_ngx_codemirror__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! @ctrl/ngx-codemirror */ 261);
 /* harmony import */ var codemirror_mode_javascript_javascript__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! codemirror/mode/javascript/javascript */ 4388);
 /* harmony import */ var codemirror_mode_javascript_javascript__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(codemirror_mode_javascript_javascript__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var codemirror_mode_css_css__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! codemirror/mode/css/css */ 5772);
@@ -136,6 +136,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var codemirror_addon_hint_css_hint__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(codemirror_addon_hint_css_hint__WEBPACK_IMPORTED_MODULE_19__);
 /* harmony import */ var codemirror_addon_hint_javascript_hint__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! codemirror/addon/hint/javascript-hint */ 5477);
 /* harmony import */ var codemirror_addon_hint_javascript_hint__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(codemirror_addon_hint_javascript_hint__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @angular/common */ 316);
+
 
 
 
@@ -190,15 +192,18 @@ class AppModule {
         useFactory: loadConfigs,
         deps: [_main_service__WEBPACK_IMPORTED_MODULE_10__.MainService],
         multi: true
-      }, (0,_angular_common_http__WEBPACK_IMPORTED_MODULE_22__.provideHttpClient)((0,_angular_common_http__WEBPACK_IMPORTED_MODULE_22__.withInterceptorsFromDi)())],
-      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_23__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_24__.FormsModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_25__.BrowserAnimationsModule, ngx_toastr__WEBPACK_IMPORTED_MODULE_26__.ToastrModule.forRoot(), _ctrl_ngx_codemirror__WEBPACK_IMPORTED_MODULE_27__.CodemirrorModule]
+      }, (0,_angular_common_http__WEBPACK_IMPORTED_MODULE_22__.provideHttpClient)((0,_angular_common_http__WEBPACK_IMPORTED_MODULE_22__.withInterceptorsFromDi)()), {
+        provide: _angular_common__WEBPACK_IMPORTED_MODULE_23__.LocationStrategy,
+        useClass: _angular_common__WEBPACK_IMPORTED_MODULE_23__.HashLocationStrategy
+      }],
+      imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_24__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_25__.FormsModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_26__.BrowserAnimationsModule, ngx_toastr__WEBPACK_IMPORTED_MODULE_27__.ToastrModule.forRoot(), _ctrl_ngx_codemirror__WEBPACK_IMPORTED_MODULE_28__.CodemirrorModule]
     });
   }
 }
 (function () {
   (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_21__["ɵɵsetNgModuleScope"](AppModule, {
     declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent, _main_main_component__WEBPACK_IMPORTED_MODULE_2__.MainComponent, _html_part_html_part_component__WEBPACK_IMPORTED_MODULE_3__.HtmlPartComponent, _css_part_css_part_component__WEBPACK_IMPORTED_MODULE_4__.CssPartComponent, _js_part_js_part_component__WEBPACK_IMPORTED_MODULE_5__.JsPartComponent, _iframe_part_iframe_part_component__WEBPACK_IMPORTED_MODULE_6__.IframePartComponent, _loader_loader_component__WEBPACK_IMPORTED_MODULE_7__.LoaderComponent, _modal_modal_component__WEBPACK_IMPORTED_MODULE_8__.ModalComponent, _ressources_ressources_component__WEBPACK_IMPORTED_MODULE_9__.RessourcesComponent, _safe_pipe__WEBPACK_IMPORTED_MODULE_11__.SafePipe, _fiddles_history_fiddles_history_component__WEBPACK_IMPORTED_MODULE_12__.FiddlesHistoryComponent, _pastebin_pastebin_component__WEBPACK_IMPORTED_MODULE_13__.PastebinComponent],
-    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_23__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_24__.FormsModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_25__.BrowserAnimationsModule, ngx_toastr__WEBPACK_IMPORTED_MODULE_26__.ToastrModule, _ctrl_ngx_codemirror__WEBPACK_IMPORTED_MODULE_27__.CodemirrorModule]
+    imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_24__.BrowserModule, _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule, _angular_forms__WEBPACK_IMPORTED_MODULE_25__.FormsModule, _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_26__.BrowserAnimationsModule, ngx_toastr__WEBPACK_IMPORTED_MODULE_27__.ToastrModule, _ctrl_ngx_codemirror__WEBPACK_IMPORTED_MODULE_28__.CodemirrorModule]
   });
 })();
 
