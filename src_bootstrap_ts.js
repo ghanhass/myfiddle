@@ -1197,13 +1197,13 @@ class MainService {
     return this.appConfig[key];
   }
   onEditorKeyDown(event, codePartComponent) {
-    console.log('onEditorKeyDown event = ', event);
-    let isCtrlPressed = event.code == 'ControlLeft';
-    if (isCtrlPressed) {
+    /*console.log('onEditorKeyDown event = ', event);
+         let isCtrlPressed = event.code == 'ControlLeft';
+         if (isCtrlPressed) {
       this.ctrlEnterMode = true;
       codePartComponent.codeMirrorEditor.setReadonly(true);
     }
-    console.log('this.mainService.ctrlEnterMode = ', this.ctrlEnterMode);
+         console.log('this.mainService.ctrlEnterMode = ', this.ctrlEnterMode);*/
   }
   onEditorKeyUp(event, codePartComponent) {
     /*
