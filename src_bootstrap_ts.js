@@ -1206,12 +1206,14 @@ class MainService {
     console.log('this.mainService.ctrlEnterMode = ', this.ctrlEnterMode);
   }
   onEditorKeyUp(event, codePartComponent) {
+    /*
     let isCtrlReleased = event.code == 'ControlLeft';
-    if (this.ctrlEnterMode && isCtrlReleased) {
+         if (this.ctrlEnterMode && isCtrlReleased) {
       this.ctrlEnterMode = false;
       codePartComponent.codeMirrorEditor.setReadonly(false);
     }
-    console.log('this.mainService.ctrlEnterMode = ', this.ctrlEnterMode);
+         console.log('this.mainService.ctrlEnterMode = ', this.ctrlEnterMode);
+    */
   }
   /**
    *
