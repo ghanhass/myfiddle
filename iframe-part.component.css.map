@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/iframe-part/iframe-part.component.css"],
+  "sourcesContent": ["iframe{\n    height:100%;\n    width:100%;\n    border:none;\n    user-select: none;\n}\n\n#save-status{\n    display:none !important;\n}\n\n.copy-input{\n    position:fixed;\n    left:99999px;\n    top:99999px;\n}"],
+  "mappings": ";AAAA;AACI,UAAO;AACP,SAAM;AACN,UAAO;AACP,uBAAa;AAAb,eAAa;AACjB;AAEA,CAAC;AACG,WAAQ;AACZ;AAEA,CAAC;AACG,YAAS;AACT,QAAK;AACL,OAAI;AACR;",
+  "names": []
+}

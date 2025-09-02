@@ -1,1 +1,7 @@
-{"version":3,"file":"main.js","mappings":";;;;;;;;AAAA,sIAAqB,CAACA,KAAK,CACxBC,GAAG,IAAKC,OAAO,CAACC,KAAK,CAACF,GAAG,CAAC,CAC5B,C","sources":["./src/main.ts"],"sourcesContent":["import(\"./bootstrap\").catch(\n  (err) => console.error(err)\n)"],"names":["catch","err","console","error"],"sourceRoot":"webpack:///","x_google_ignoreList":[]}
+{
+  "version": 3,
+  "sources": ["src/main.ts"],
+  "sourcesContent": ["import(\"./bootstrap\").catch(\n  (err) => console.error(err)\n)"],
+  "mappings": ";AAAA,OAAO,yBAAa,EAAE,MACpB,CAAC,QAAQ,QAAQ,MAAM,GAAG,CAAC;",
+  "names": []
+}
