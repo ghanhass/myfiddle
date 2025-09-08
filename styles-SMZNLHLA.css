@@ -1,4 +1,13 @@
 /* src/styles.css */
+app-root {
+  display: block;
+  height: 100%;
+}
+app-main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 .code-component {
   position: relative;
 }
@@ -38,7 +47,7 @@
   padding-top: 4px;
 }
 body {
-  padding: 2px;
+  padding: 0px;
   margin: 0px;
   font-family: Arial, sans-serif;
   overflow: hidden;
@@ -2620,4 +2629,4 @@ button.toast-close-button {
 }
 
 /* angular:styles/global:styles */
-/*# sourceMappingURL=styles-PP2JR342.css.map */
+/*# sourceMappingURL=styles-SMZNLHLA.css.map */
