@@ -44215,7 +44215,7 @@ var NoopAnimationsModule = class _NoopAnimationsModule {
 
 // src/app/main.service.ts
 var headers = new HttpHeaders();
-headers = headers.set("PRIVATE-TOKEN", window.atob("Z2xwYXQtWXpveENtODZNUXAxT21WM2VHSnBDUkF3ZkVQSEdfMk1rWmZNNldhQUxoQS4xNzF4MDd2aDg="));
+headers = headers.set("PRIVATE-TOKEN", window.atob("Z2xwYXQtNEJXYVR4VFl5UlB0VW1BbjhuRExQRzg2TVFwMU9tdHlObTk2Q3cuMDEuMTIxaG9hdjJl"));
 headers = headers.set("Content-Type", "application/json");
 var gitlabProjectId = "52190204";
 var MainService = class _MainService {
