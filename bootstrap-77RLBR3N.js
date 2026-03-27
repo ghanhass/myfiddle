@@ -42738,21 +42738,24 @@ var MainService = class _MainService {
         content: JSON.stringify(fiddleData),
         file_path: timeStamp
       };
-      let newSnippetRawUrl;
       let newFiddleId;
-      let promise = new Promise((resolve, reject) => {
-        this.http.post("https://gitlab.com/api/v4/projects/52190204/snippets", body, { headers }).subscribe({
-          next: (res1) => {
-            newSnippetRawUrl = `https://gitlab.com/api/v4/projects/${gitlabProjectId}/snippets/${res1.id}/raw`;
-            newFiddleId = res1.id;
-            resolve(newFiddleId);
-          },
-          error: (err1) => {
-            reject(err1);
-          }
-        });
-      });
-      return from(promise);
+      let obs = this.http.post("https://gitlab.com/api/v4/projects/52190204/snippets", body, { headers }).pipe(map((res1) => {
+        newFiddleId = res1.id;
+        let res2;
+        if (res1.id && res1.id > 0) {
+          res2 = {
+            result: res1,
+            message: "ok"
+          };
+        } else {
+          res2 = {
+            result: void 0,
+            message: "error"
+          };
+        }
+        return res2;
+      }));
+      return obs;
     } else {
       console.log("fiddleData = ", fiddleData);
       return this.http.post("http://localhost:4200/api/fiddle", fiddleData);
@@ -59550,4 +59553,4 @@ bootstrapApplication(AppComponent, appConfig);
    * License: MIT
    *)
 */
-//# sourceMappingURL=bootstrap-ZVYFQF4H.js.map
+//# sourceMappingURL=bootstrap-77RLBR3N.js.map
