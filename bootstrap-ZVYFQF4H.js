@@ -42676,7 +42676,10 @@ var MainService = class _MainService {
         this.http.get(gitlabRawSnippetUrl, { headers }).subscribe({
           //get seeked fiddle content from gitlab
           next: (res2) => {
-            let result = res2;
+            let result = {
+              result: res2,
+              message: "ok"
+            };
             resolve(result);
           },
           error: (error2) => {
@@ -42702,12 +42705,12 @@ var MainService = class _MainService {
             let result;
             if (res2.hasOwnProperty("css") && res2.hasOwnProperty("js") && res2.hasOwnProperty("html")) {
               result = {
-                status: "ok",
-                fiddleData: res2
+                message: "ok",
+                result: res2
               };
             } else {
               result = {
-                status: "not found"
+                message: "not found"
               };
             }
             resolve(result);
@@ -44190,7 +44193,7 @@ var IframePartComponent = class _IframePartComponent {
           this.hideloader.emit();
         }
         let appName = this.mainService.envVars.appName;
-        let fiddleId = res.result?.id;
+        let fiddleId = res.result?.id || 0;
         if (fiddleId > 0) {
           if (this.copyInput.nativeElement) {
             let input2 = this.copyInput.nativeElement;
@@ -44325,7 +44328,7 @@ var IframePartComponent = class _IframePartComponent {
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IframePartComponent, { className: "IframePartComponent", filePath: "src/app/iframe-part/iframe-part.component.ts", lineNumber: 17 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(IframePartComponent, { className: "IframePartComponent", filePath: "src/app/iframe-part/iframe-part.component.ts", lineNumber: 18 });
 })();
 
 // node_modules/@angular/forms/fesm2022/forms.mjs
@@ -56802,64 +56805,73 @@ var MainComponent = class _MainComponent {
         } else {
           console.log("//retrieve data from backend");
           this.loader.showLoader();
-          this.mainService.getFiddle(currentFiddleId).subscribe((res) => {
-            console.log("getFiddle res = ", res);
-            if (res.id) {
-              let fiddleData = res;
-              this.htmlPart.code = fiddleData.html;
-              this.cssPart.code = fiddleData.css;
-              this.jsPart.code = fiddleData.js;
-              this.pastebinPart.text = fiddleData.pastebintext;
-              this.fiddleTitle = fiddleData.title;
-              this.mainService.jsCode = fiddleData.js;
-              this.mainService.htmlCode = fiddleData.html;
-              this.mainService.cssCode = fiddleData.css;
-              this.mainService.fiddleTitle = fiddleData.title;
-              this.mainService.iframeResizeValue = fiddleData.iframeResizeValue;
-              this.mainService.isMobileMode = fiddleData.isMobileMode;
-              this.appMode = fiddleData.appMode || "fiddle";
-              if (this.mainService.isMobileMode) {
-                this.changeLayout(1);
-                let mobileLayoutArr = fiddleData.mobileLayout?.split(":");
-                let mobileCodePart = mobileLayoutArr[0];
-                let mobileResult = mobileLayoutArr[1];
-                switch (true) {
-                  case mobileCodePart == "0":
-                    this.showHtml = false;
-                    this.showCss = false;
-                    this.showJs = false;
-                    break;
-                  case mobileCodePart == "1":
-                    this.showHtml = true;
-                    this.showCss = false;
-                    this.showJs = false;
-                    break;
-                  case mobileCodePart == "2":
-                    this.showHtml = false;
-                    this.showCss = true;
-                    this.showJs = false;
-                    break;
-                  case mobileCodePart == "3":
-                    this.showHtml = false;
-                    this.showCss = false;
-                    this.showJs = true;
-                    break;
+          this.mainService.getFiddle(currentFiddleId).subscribe({
+            next: (res) => {
+              {
+                console.log("getFiddle res = ", res);
+                if (res.message == "ok") {
+                  let fiddleData = res.result;
+                  this.htmlPart.code = fiddleData.html;
+                  this.cssPart.code = fiddleData.css;
+                  this.jsPart.code = fiddleData.js;
+                  this.pastebinPart.text = fiddleData.pastebintext;
+                  this.fiddleTitle = fiddleData.title;
+                  this.mainService.jsCode = fiddleData.js;
+                  this.mainService.htmlCode = fiddleData.html;
+                  this.mainService.cssCode = fiddleData.css;
+                  this.mainService.fiddleTitle = fiddleData.title;
+                  this.mainService.iframeResizeValue = fiddleData.iframeResizeValue;
+                  this.mainService.isMobileMode = fiddleData.isMobileMode;
+                  this.appMode = fiddleData.appMode || "fiddle";
+                  if (this.mainService.isMobileMode) {
+                    this.changeLayout(1);
+                    let mobileLayoutArr = fiddleData.mobileLayout?.split(":");
+                    let mobileCodePart = mobileLayoutArr[0];
+                    let mobileResult = mobileLayoutArr[1];
+                    switch (true) {
+                      case mobileCodePart == "0":
+                        this.showHtml = false;
+                        this.showCss = false;
+                        this.showJs = false;
+                        break;
+                      case mobileCodePart == "1":
+                        this.showHtml = true;
+                        this.showCss = false;
+                        this.showJs = false;
+                        break;
+                      case mobileCodePart == "2":
+                        this.showHtml = false;
+                        this.showCss = true;
+                        this.showJs = false;
+                        break;
+                      case mobileCodePart == "3":
+                        this.showHtml = false;
+                        this.showCss = false;
+                        this.showJs = true;
+                        break;
+                    }
+                    if (mobileResult == "0") {
+                      this.showResult = false;
+                    } else if (mobileResult == "1") {
+                      this.showResult = true;
+                    }
+                    this.mainService.showHtml = this.showHtml;
+                    this.mainService.showCss = this.showCss;
+                    this.mainService.showJs = this.showJs;
+                    this.mainService.showResult = this.showResult;
+                  } else {
+                    this.changeLayout(fiddleData.layout, fiddleData);
+                  }
+                  this.mainService.scheduledRunFiddle = true;
+                  this.runCode();
+                } else if (res.message == "error") {
+                  this.toastrService.warning("Fiddle not found.");
+                  this.changeLayout(1);
+                  this.loader.hideLoader();
                 }
-                if (mobileResult == "0") {
-                  this.showResult = false;
-                } else if (mobileResult == "1") {
-                  this.showResult = true;
-                }
-                this.mainService.showHtml = this.showHtml;
-                this.mainService.showCss = this.showCss;
-                this.mainService.showJs = this.showJs;
-                this.mainService.showResult = this.showResult;
-              } else {
-                this.changeLayout(fiddleData.layout, fiddleData);
               }
-              this.mainService.scheduledRunFiddle = true;
-              this.runCode();
-            } else {
+            },
+            error: (err) => {
               this.toastrService.warning("Fiddle not found.");
               this.changeLayout(1);
               this.loader.hideLoader();
@@ -59538,4 +59550,4 @@ bootstrapApplication(AppComponent, appConfig);
    * License: MIT
    *)
 */
-//# sourceMappingURL=bootstrap-IGM36E6R.js.map
+//# sourceMappingURL=bootstrap-ZVYFQF4H.js.map
