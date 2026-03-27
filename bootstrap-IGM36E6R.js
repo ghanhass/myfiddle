@@ -56804,8 +56804,8 @@ var MainComponent = class _MainComponent {
           this.loader.showLoader();
           this.mainService.getFiddle(currentFiddleId).subscribe((res) => {
             console.log("getFiddle res = ", res);
-            if (res.message == "success") {
-              let fiddleData = res.result;
+            if (res.id) {
+              let fiddleData = res;
               this.htmlPart.code = fiddleData.html;
               this.cssPart.code = fiddleData.css;
               this.jsPart.code = fiddleData.js;
@@ -56859,7 +56859,7 @@ var MainComponent = class _MainComponent {
               }
               this.mainService.scheduledRunFiddle = true;
               this.runCode();
-            } else if (res.message == "error") {
+            } else {
               this.toastrService.warning("Fiddle not found.");
               this.changeLayout(1);
               this.loader.hideLoader();
@@ -59538,4 +59538,4 @@ bootstrapApplication(AppComponent, appConfig);
    * License: MIT
    *)
 */
-//# sourceMappingURL=bootstrap-JL3W57KO.js.map
+//# sourceMappingURL=bootstrap-IGM36E6R.js.map
