@@ -1,0 +1,43 @@
+{
+    "themesList" : [
+    {
+        "name": "VS",
+        "id": "vs-default",
+        "data": {
+            "base": "vs",
+            "inherit": true,
+            "rules": [
+                {
+                    "foreground": "333333",
+                    "background": "ffffff",
+                    "token": ""
+                }
+            ],
+            "colors": {
+                "editor.foreground": "#333333",
+                "editor.background": "#FFFFFF",
+                "editor.selectionBackground": "#d2d2d2",
+                "editor.lineHighlightBackground": "#FFFFFF",
+                "editorCursor.foreground": "#333333",
+                "editorWhitespace.foreground": "#333333"
+            }
+        }
+    },
+    {
+        "name": "VS Dark",
+        "id": "vs-default-dark",
+        "data": {
+            "base": "vs-dark",
+            "inherit": true,
+            "rules": [],
+            "colors": {
+                "editor.foreground": "#d4d4d4",
+                "editor.background": "#1e1e1e",
+                "editor.selectionBackground": "#414141",
+                "editor.lineHighlightBackground": "#1e1e1e",
+                "editorCursor.foreground": "#d4d4d4",
+                "editorWhitespace.foreground": "#d4d4d480"
+            }
+        }
+    }
+]}
