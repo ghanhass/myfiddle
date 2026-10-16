@@ -1628,6 +1628,28 @@
       "createdAt": 1791380474746,
       "appMode": "fiddle",
       "id": "btQi1D2ra-o"
+    },
+    {
+      "js": "",
+      "html": "",
+      "css": "",
+      "pastebintext": "div#movie_player::after {\n    content:\"\";\n    width:100%;\n    height:100%;\n    position:absolute;\n    top:0px;\n    left:0px;\n    display:block;\n    background-color: #000000e3;-\n    index:111;\n    filter: blur(1px);\n    z-index: 11;\n}\n\nimg{\n    opacity:0.05 !important;\n}\n\n*{\n    background-image: none !important;\n}",
+      "pastebintextSyntax": "CSS",
+      "jsPartSize": -3.3333333333333335,
+      "cssPartSize": -3.3333333333333335,
+      "htmlPartSize": -3.3333333333333335,
+      "codesPartSize": 350,
+      "mainContainerWidth": 0,
+      "mainContainerHeight": 0,
+      "mainContainerSize": 0,
+      "title": "css paste test",
+      "layout": 1,
+      "mobileLayout": "1:1",
+      "iframeResizeValue": -10,
+      "isMobileMode": false,
+      "createdAt": 1792089109163,
+      "appMode": "pastebin",
+      "id": "yxe-1JhF_Ck"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
