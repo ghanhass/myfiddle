@@ -39842,10 +39842,15 @@ var MainService = class _MainService {
   fiddlesHistoryListPage = this.store.selectSignal(selectFiddlesHistoryListPage);
   requestRunCode = new Subject();
   changePasteBinSyntax = new Subject();
+  activatedRoute = inject2(ActivatedRoute);
   arbitraryHtmlIds = [
     "hassane-ghanmi"
   ];
   currentFiddleId = signal("", ...ngDevMode ? [{ debugName: "currentFiddleId" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  currentRouterArbitraryUrlData = signal("", ...ngDevMode ? [{ debugName: "currentRouterArbitraryUrlData" }] : (
     /* istanbul ignore next */
     []
   ));
@@ -40738,8 +40743,8 @@ var IframePartComponent = class _IframePartComponent {
       this.store.dispatch(updateIframeLoadingStatusAction({ loading: false }));
       if (this.mainService.scheduledRunFiddle && this.isIframeReady()) {
         this.mainService.scheduledRunFiddle = false;
-        if (this.mainService.arbitraryHtmlIds.includes(this.mainService.currentFiddleId())) {
-          this.runFiddle(JSON.stringify({ arbitraryHtmlFromId: this.mainService.currentFiddleId() }));
+        if (this.mainService.arbitraryHtmlIds.includes(this.mainService.currentRouterArbitraryUrlData())) {
+          this.runFiddle(JSON.stringify({ arbitraryHtmlFromUrl: this.mainService.currentRouterArbitraryUrlData() }));
         } else {
           this.runFiddle();
         }
@@ -40753,8 +40758,8 @@ var IframePartComponent = class _IframePartComponent {
   runFiddle(arbitraryFiddleData) {
     if (typeof arbitraryFiddleData == "string") {
       let obj = JSON.parse(arbitraryFiddleData);
-      if (this.mainService.arbitraryHtmlIds.includes(obj.arbitraryHtmlFromId)) {
-        this.postMessageToIframe("run-arbitrary-html", obj.arbitraryHtmlFromId);
+      if (this.mainService.arbitraryHtmlIds.includes(obj.arbitraryHtmlFromUrl)) {
+        this.postMessageToIframe("run-arbitrary-html", obj.arbitraryHtmlFromUrl);
       }
     } else {
       let fiddleData = arbitraryFiddleData || this.fiddleData();
@@ -53796,35 +53801,37 @@ var MainComponent = class _MainComponent {
       console.log("currentFiddleId = ", currentFiddleId);
       if (currentFiddleId) {
         this.mainService.currentFiddleId.set(currentFiddleId);
-        if (this.mainService.arbitraryHtmlIds.includes(currentFiddleId)) {
+        if (this.mainService.redirectAfterSaveMode) {
+          let type = this.fiddleData().appMode == "fiddle" ? "Fiddle" : "PasteBin";
+          this.notifService.showInfo(`${type} saved ! URL copied to clipboard.`);
+          this.mainService.redirectAfterSaveMode = false;
+        } else if (this.mainService.scheduledRunFiddle) {
+          this.store.dispatch(requestFiddleFromApiAction({ id: currentFiddleId }));
+        } else {
+          this.mainService.scheduledRunFiddle = true;
+          this.store.dispatch(requestFiddleFromApiAction({ id: currentFiddleId }));
+        }
+      } else {
+        this.mainService.currentRouterArbitraryUrlData.set(this.activatedRoute.snapshot.data["arbitraryUrl"]);
+        let currentRouterArbitraryUrlData = this.mainService.currentRouterArbitraryUrlData();
+        if (this.mainService.arbitraryHtmlIds.includes(this.mainService.currentRouterArbitraryUrlData())) {
           this.store.dispatch(updateFiddleLoadingStatusAction({
             loading: false
           }));
-          this.isPortfolioMode.set(currentFiddleId === "hassane-ghanmi");
+          this.isPortfolioMode.set(this.mainService.currentRouterArbitraryUrlData() === "hassane-ghanmi");
           this.mainService.scheduledRunFiddle = true;
-          this.mainService.requestRunCode.next(JSON.stringify({ arbitraryHtmlFromId: currentFiddleId }));
+          this.mainService.requestRunCode.next(JSON.stringify({ arbitraryHtmlFromUrl: this.mainService.currentRouterArbitraryUrlData() }));
         } else {
-          if (this.mainService.redirectAfterSaveMode) {
-            let type = this.fiddleData().appMode == "fiddle" ? "Fiddle" : "PasteBin";
-            this.notifService.showInfo(`${type} saved ! URL copied to clipboard.`);
-            this.mainService.redirectAfterSaveMode = false;
-          } else if (this.mainService.scheduledRunFiddle) {
-            this.store.dispatch(requestFiddleFromApiAction({ id: currentFiddleId }));
-          } else {
-            this.mainService.scheduledRunFiddle = true;
-            this.store.dispatch(requestFiddleFromApiAction({ id: currentFiddleId }));
-          }
+          this.store.dispatch(updateFiddleLoadingStatusAction({
+            loading: false
+          }));
+          this.store.dispatch(updateFiddleDataAction({
+            appMode: this.activatedRoute.snapshot.data["appMode"]
+          }));
+          setTimeout(() => {
+            this.changeLayout(1);
+          }, 1);
         }
-      } else {
-        this.store.dispatch(updateFiddleLoadingStatusAction({
-          loading: false
-        }));
-        this.store.dispatch(updateFiddleDataAction({
-          appMode: this.activatedRoute.snapshot.data["appMode"]
-        }));
-        setTimeout(() => {
-          this.changeLayout(1);
-        }, 1);
       }
       this.mainService.resumeFiddleTheme(this.htmlPart, this.cssPart, this.jsPart, this.pastebinPart);
     });
@@ -57933,6 +57940,11 @@ var routes = [
         data: { appMode: "pastebin" }
       }
     ]
+  },
+  {
+    path: "hassane-ghanmi",
+    component: MainComponent,
+    data: { arbitraryUrl: "hassane-ghanmi", appMode: "fiddle" }
   },
   {
     path: "",
