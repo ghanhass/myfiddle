@@ -78,6 +78,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 --------------------------------------------------------------------------------
+Package: jszip
+License: "(MIT OR GPL-3.0-or-later)"
+
+
+--------------------------------------------------------------------------------
 Package: @angular/core
 License: "MIT"
 
