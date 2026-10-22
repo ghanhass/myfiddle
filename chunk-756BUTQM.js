@@ -42337,9 +42337,9 @@ var PastebinExtensions = [
 
 // src/app/services/main.service.ts
 var headers = new HttpHeaders();
-headers = headers.set("PRIVATE-TOKEN", window.atob("Z2xwYXQtZlNteDQ2WkhMbkZzUW5MeVoyOU9IbU02TVFwdk9qRUtkVHB2WmpCcllROC4wMS4xNzFhcmdyZzc="));
+headers = headers.set("PRIVATE-TOKEN", window.atob("Z2xwYXQtOUJLZGc2TVpSbDd0MzVsVWo0ajVtV002TVFwdk9qRUtkVHB3ZWpWMlpBOC4wMS4xNzB1YzhzamM="));
 headers = headers.set("Content-Type", "application/json");
-var gitlabProjectId = "52190204";
+var gitlabProjectId = "87958479";
 var MainService = class _MainService {
   constructor(http, ngZone) {
     this.http = http;
