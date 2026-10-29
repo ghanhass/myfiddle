@@ -60562,7 +60562,7 @@ var routes = [
   },
   {
     path: "**",
-    redirectTo: ""
+    redirectTo: "/"
   }
 ];
 var appConfig = {
