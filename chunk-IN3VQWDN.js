@@ -2,13 +2,13 @@ import {
   completeFromList,
   ifNotIn,
   snippetCompletion
-} from "./chunk-JQDR2R7M.js";
+} from "./chunk-RPLEIAR6.js";
 import {
   ContextTracker,
   ExternalTokenizer,
   LRParser,
   LocalTokenGroup
-} from "./chunk-SX2GQLIV.js";
+} from "./chunk-UXFBIAE4.js";
 import {
   EditorSelection,
   EditorView,
@@ -27,7 +27,7 @@ import {
   sublanguageProp,
   syntaxTree,
   tags
-} from "./chunk-JHYYLJDR.js";
+} from "./chunk-6ZKKHHXJ.js";
 
 // node_modules/@lezer/javascript/dist/index.js
 var noSemi = 317;

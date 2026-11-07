@@ -2,7 +2,7 @@ import {
   ExternalTokenizer,
   LRParser,
   LocalTokenGroup
-} from "./chunk-SX2GQLIV.js";
+} from "./chunk-UXFBIAE4.js";
 import {
   IterMode,
   LRLanguage,
@@ -15,7 +15,7 @@ import {
   styleTags,
   syntaxTree,
   tags
-} from "./chunk-JHYYLJDR.js";
+} from "./chunk-6ZKKHHXJ.js";
 
 // node_modules/@lezer/css/dist/index.js
 var descendantOp = 148;

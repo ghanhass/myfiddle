@@ -4236,13 +4236,18 @@ function scrollRectIntoView(dom, rect, side, x, y, xMargin, yMargin, ltr) {
   for (let cur = dom, stop = false; cur && !stop; ) {
     if (isElt(cur)) {
       let bounding, top2 = cur == doc2.body;
-      let scaleX = 1, scaleY = 1;
+      let scaleX = 1, scaleY = 1, xScroll = true, yScroll = true;
       if (top2) {
         bounding = windowRect(win);
       } else {
-        if (/^(fixed|sticky)$/.test(getComputedStyle(cur).position))
+        let style = getComputedStyle(cur);
+        if (/^(fixed|sticky)$/.test(style.position))
           stop = true;
-        if (cur.scrollHeight <= cur.clientHeight && cur.scrollWidth <= cur.clientWidth) {
+        if (cur.scrollHeight <= cur.clientHeight || !/auto|scroll/.test(style.overflowY))
+          yScroll = false;
+        if (cur.scrollWidth <= cur.clientWidth || !/auto|scroll/.test(style.overflowX))
+          xScroll = false;
+        if (!xScroll && !yScroll) {
           cur = cur.assignedSlot || cur.parentNode;
           continue;
         }
@@ -4256,7 +4261,8 @@ function scrollRectIntoView(dom, rect, side, x, y, xMargin, yMargin, ltr) {
         };
       }
       let moveX = 0, moveY = 0;
-      if (y == "nearest") {
+      if (!yScroll) ;
+      else if (y == "nearest") {
         if (rect.top < bounding.top + yMargin) {
           moveY = rect.top - (bounding.top + yMargin);
           if (side > 0 && rect.bottom > bounding.bottom + moveY)
@@ -4271,7 +4277,8 @@ function scrollRectIntoView(dom, rect, side, x, y, xMargin, yMargin, ltr) {
         let targetTop = y == "center" && rectHeight <= boundingHeight ? rect.top + rectHeight / 2 - boundingHeight / 2 : y == "start" || y == "center" && side < 0 ? rect.top - yMargin : rect.bottom - boundingHeight + yMargin;
         moveY = targetTop - bounding.top;
       }
-      if (x == "nearest") {
+      if (!xScroll) ;
+      else if (x == "nearest") {
         if (rect.left < bounding.left + xMargin) {
           moveX = rect.left - (bounding.left + xMargin);
           if (side > 0 && rect.right > bounding.right + moveX)
@@ -4335,9 +4342,9 @@ function scrollableParents(dom, getX = true) {
     if (cur == doc2.body || (!getX || x) && y) {
       break;
     } else if (isElt(cur)) {
-      if (!y && cur.scrollHeight > cur.clientHeight)
+      if (!y && cur.scrollHeight > cur.clientHeight && /scroll|auto/.test(getComputedStyle(cur).overflowY))
         y = cur;
-      if (getX && !x && cur.scrollWidth > cur.clientWidth)
+      if (getX && !x && cur.scrollWidth > cur.clientWidth && /scroll|auto/.test(getComputedStyle(cur).overflowX))
         x = cur;
       cur = cur.assignedSlot || cur.parentNode;
     } else if (cur.nodeType == 11) {
@@ -4886,7 +4893,6 @@ function autoDirection(text, from, to) {
     if (type == 2 || type == 4)
       return RTL;
   }
-  return LTR;
 }
 var clickAddsSelectionRange = /* @__PURE__ */ Facet.define();
 var dragMovesSelection$1 = /* @__PURE__ */ Facet.define();
@@ -5058,8 +5064,6 @@ function getIsolatedRanges(view, line) {
       let level = result;
       for (let i2 = active.length - 1; i2 >= 0; i2--, open--) {
         let direction = active[i2].spec.bidiIsolate, update;
-        if (direction == null)
-          direction = autoDirection(line.text, from, to);
         if (open > 0 && level.length && (update = level[level.length - 1]).to == from && update.direction == direction) {
           update.to = to;
           level = update.inner;
@@ -5071,7 +5075,28 @@ function getIsolatedRanges(view, line) {
       }
     }
   });
-  return result;
+  return resolveIsolates(line.text, result);
+}
+function resolveIsolates(text, isolates) {
+  for (let i2 of isolates) {
+    if (i2.direction == null) {
+      for (let pos = i2.from, j = 0; pos < i2.to; j++) {
+        let nextInner = j < i2.inner.length ? i2.inner[j] : null;
+        let dir = autoDirection(text, pos, nextInner ? nextInner.from : i2.to);
+        if (dir) {
+          i2.direction = dir;
+          break;
+        }
+        if (!nextInner)
+          break;
+        pos = nextInner.to;
+      }
+      if (i2.direction == null)
+        i2.direction = Direction.LTR;
+    }
+    resolveIsolates(text, i2.inner);
+  }
+  return isolates;
 }
 var scrollMargins = /* @__PURE__ */ Facet.define();
 function getScrollMargins(view) {
@@ -7170,14 +7195,14 @@ function moveToLineBoundary(view, start, forward, includeWrap) {
   if (coords) {
     let editorRect = view.dom.getBoundingClientRect();
     let direction = view.textDirectionAt(block.from);
-    let pos = view.posAtCoords({
+    let pos = view.posAndSideAtCoords({
       x: forward == (direction == Direction.LTR) ? editorRect.right - 1 : editorRect.left + 1,
       y: (coords.top + coords.bottom) / 2
     });
-    if (pos != null)
-      return EditorSelection.cursor(pos, forward ? -1 : 1);
+    if (pos)
+      return EditorSelection.cursor(pos.pos, pos.assoc);
   }
-  return EditorSelection.cursor(forward ? block.to : block.from, forward ? -1 : 1);
+  return EditorSelection.cursor(forward ? block.to : block.from, forward ? 1 : -1);
 }
 function moveByChar(view, start, forward, by) {
   let line = view.state.doc.lineAt(start.head), spans = view.bidiSpans(line);
@@ -9521,7 +9546,7 @@ var ViewState = class {
   }
   updateScaler() {
     let scaler = this.scaler;
-    this.scaler = this.heightMap.height <= 7e6 ? IdScaler : new BigScaler(this.heightOracle, this.heightMap, this.viewports);
+    this.scaler = this.heightMap.height <= 7e6 ? IdScaler : BigScaler.get(this.heightOracle, this.heightMap, this.viewports);
     return scaler.eq(this.scaler) ? 0 : 2;
   }
   updateViewportLines() {
@@ -9876,7 +9901,7 @@ var ViewState = class {
     return this.scrollParent == this.view.scrollDOM ? this.scrollParent.scrollTop * this.scaleY : (this.scrollParent ? this.scrollParent.getBoundingClientRect().top : 0) - this.view.contentDOM.getBoundingClientRect().top;
   }
   scrollAnchorAt(scrollOffset) {
-    let block = this.lineBlockAtHeight(scrollOffset + 8);
+    let block = this.lineBlockAtHeight(scrollOffset + 12 - this.paddingTop);
     return block.from >= this.viewport.from || this.viewportLines[0].top - scrollOffset > 200 ? block : this.viewportLines[0];
   }
   elementAtHeight(height) {
@@ -9964,20 +9989,27 @@ function staticDeco(state) {
   return deco;
 }
 var BigScaler = class _BigScaler {
-  constructor(oracle, heightMap, viewports) {
+  constructor(scale, viewports) {
+    this.scale = scale;
+    this.viewports = viewports;
+  }
+  static get(oracle, heightMap, viewports) {
     let vpHeight = 0, base2 = 0, domBase = 0;
-    this.viewports = viewports.map(({ from, to }) => {
+    let vps = viewports.map(({ from, to }) => {
       let top2 = heightMap.lineAt(from, QueryType.ByPos, oracle, 0, 0).top;
       let bottom = heightMap.lineAt(to, QueryType.ByPos, oracle, 0, 0).bottom;
       vpHeight += bottom - top2;
       return { from, to, top: top2, bottom, domTop: 0, domBottom: 0 };
     });
-    this.scale = (7e6 - vpHeight) / (heightMap.height - vpHeight);
-    for (let obj of this.viewports) {
-      obj.domTop = domBase + (obj.top - base2) * this.scale;
+    if (heightMap.height - vpHeight < 10)
+      return IdScaler;
+    let scale = (7e6 - vpHeight) / (heightMap.height - vpHeight);
+    for (let obj of vps) {
+      obj.domTop = domBase + (obj.top - base2) * scale;
       domBase = obj.domBottom = obj.domTop + (obj.bottom - obj.top);
       base2 = obj.bottom;
     }
+    return new _BigScaler(scale, vps);
   }
   toDOM(n) {
     for (let i2 = 0, base2 = 0, domBase = 0; ; i2++) {
@@ -10416,7 +10448,7 @@ var DOMObserver = class {
   }
   onScroll(e) {
     if (this.intersecting)
-      this.flush(false);
+      this.flush(this.pendingRecords().length > 0);
     if (this.editContext)
       this.view.requestMeasure(this.editContext.measureReq);
     this.onScrollChanged(e);
@@ -13970,6 +14002,7 @@ function createDialog(view, config, result) {
   if (config.class)
     panel.className = config.class;
   panel.classList.add("cm-dialog");
+  let focus = typeof config.focus == "string" ? content2.querySelector(config.focus) : config.focus ? content2.querySelector("input") || content2.querySelector("button") : null;
   function done(form) {
     if (panel.contains(panel.ownerDocument.activeElement))
       view.focus();
@@ -13979,18 +14012,14 @@ function createDialog(view, config, result) {
     dom: panel,
     top: config.top,
     mount: () => {
-      if (config.focus) {
-        let focus;
-        if (typeof config.focus == "string")
-          focus = content2.querySelector(config.focus);
-        else
-          focus = content2.querySelector("input") || content2.querySelector("button");
-        if (focus && "select" in focus)
+      if (focus) {
+        if ("select" in focus)
           focus.select();
-        else if (focus && "focus" in focus)
+        else if ("focus" in focus)
           focus.focus();
       }
-    }
+    },
+    destroy: () => result(null)
   };
 }
 var GutterMarker = class extends RangeValue {
@@ -15771,13 +15800,14 @@ function buildTree(data) {
       cursor.next();
       let localChildren = [], localPositions = [];
       let localInRepeat = id >= minRepeatType ? id : -1;
-      let lastGroup = 0, lastEnd = end;
+      let lastGroup = 0, lastEnd = end, groupLookAhead = lookAheadAtStart;
       while (cursor.pos > endPos) {
         if (localInRepeat >= 0 && cursor.id == localInRepeat && cursor.size >= 0) {
           if (cursor.end <= lastEnd - maxBufferLength) {
-            makeRepeatLeaf(localChildren, localPositions, start, lastGroup, cursor.end, lastEnd, localInRepeat, lookAheadAtStart, contextAtStart);
+            makeRepeatLeaf(localChildren, localPositions, start, lastGroup, cursor.end, lastEnd, localInRepeat, groupLookAhead, contextAtStart);
             lastGroup = localChildren.length;
             lastEnd = cursor.end;
+            groupLookAhead = lookAhead;
           }
           cursor.next();
         } else if (depth > 2500) {
@@ -15787,7 +15817,7 @@ function buildTree(data) {
         }
       }
       if (localInRepeat >= 0 && lastGroup > 0 && lastGroup < localChildren.length)
-        makeRepeatLeaf(localChildren, localPositions, start, lastGroup, start, lastEnd, localInRepeat, lookAheadAtStart, contextAtStart);
+        makeRepeatLeaf(localChildren, localPositions, start, lastGroup, start, lastEnd, localInRepeat, groupLookAhead, contextAtStart);
       localChildren.reverse();
       localPositions.reverse();
       if (localInRepeat > -1 && lastGroup > 0) {
@@ -15837,7 +15867,7 @@ function buildTree(data) {
         if (!lastI && last2.type == type && last2.length == length2)
           return last2;
         if (lookAheadProp = last2.prop(NodeProp.lookAhead))
-          lookAhead2 = positions2[lastI] + last2.length + lookAheadProp;
+          lookAhead2 = positions2[lastI] + last2.length + lookAheadProp - length2;
       }
       return makeTree(type, children2, positions2, length2, lookAhead2, contextHash2);
     };

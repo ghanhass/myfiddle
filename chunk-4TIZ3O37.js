@@ -1,7 +1,7 @@
 import {
   ExternalTokenizer,
   LRParser
-} from "./chunk-SX2GQLIV.js";
+} from "./chunk-UXFBIAE4.js";
 import {
   LRLanguage,
   LanguageSupport,
@@ -11,7 +11,7 @@ import {
   indentNodeProp,
   styleTags,
   tags
-} from "./chunk-JHYYLJDR.js";
+} from "./chunk-6ZKKHHXJ.js";
 import "./chunk-QXIRQCXA.js";
 
 // node_modules/@lezer/rust/dist/index.js

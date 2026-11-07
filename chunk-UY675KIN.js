@@ -1,11 +1,11 @@
 import {
   completeFromList,
   ifNotIn
-} from "./chunk-JQDR2R7M.js";
+} from "./chunk-RPLEIAR6.js";
 import {
   ExternalTokenizer,
   LRParser
-} from "./chunk-SX2GQLIV.js";
+} from "./chunk-UXFBIAE4.js";
 import {
   LRLanguage,
   LanguageSupport,
@@ -15,7 +15,7 @@ import {
   styleTags,
   syntaxTree,
   tags
-} from "./chunk-JHYYLJDR.js";
+} from "./chunk-6ZKKHHXJ.js";
 import {
   __spreadProps,
   __spreadValues

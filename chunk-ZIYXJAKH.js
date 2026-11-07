@@ -4,12 +4,12 @@ import {
   htmlCompletionSource,
   htmlCompletionSourceWith,
   htmlLanguage
-} from "./chunk-WHBRLAOE.js";
-import "./chunk-CTHACLMA.js";
-import "./chunk-W275Z5K3.js";
-import "./chunk-JQDR2R7M.js";
-import "./chunk-SX2GQLIV.js";
-import "./chunk-JHYYLJDR.js";
+} from "./chunk-56RGB6FP.js";
+import "./chunk-ML5QNAMS.js";
+import "./chunk-IN3VQWDN.js";
+import "./chunk-RPLEIAR6.js";
+import "./chunk-UXFBIAE4.js";
+import "./chunk-6ZKKHHXJ.js";
 import "./chunk-QXIRQCXA.js";
 export {
   autoCloseTags,
